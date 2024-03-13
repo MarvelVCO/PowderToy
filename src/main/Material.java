@@ -3,20 +3,20 @@ package main;
 import java.awt.*;
 
 public class Material {
-    private Color color;
-
     private int x;
     private int y;
     private Material[][] grid;
-    public Material(Color color, int x, int y, Material[][] grid) {
-        this.color = color;
+    private Graphics g;
+    public Material(Color color, int x, int y, Material[][] grid, Graphics g) {
         this.x = x;
         this.y = y;
         this.grid = grid;
+        this.g = g;
+        g.setColor(color);
     }
 
-    public Color getColor() {
-        return color;
+    public Graphics getGraphics() {
+        return g;
     }
 
     public int getX() {

@@ -10,8 +10,16 @@ public class GamePanel extends JPanel implements Runnable {
     private int mouseX1;
     private int mouseY1;
     int FPS = 60;
+
+    private Material[][] grid;
+    private int gridSize;
+    private int gridPxSize;
     public GamePanel() {
-        this.setPreferredSize(new Dimension(1920, 1080));
+        gridSize = 500;
+        gridPxSize = 2;
+        grid = new Material[gridSize][gridSize];
+
+        this.setPreferredSize(new Dimension(gridPxSize * gridSize, gridPxSize * gridSize));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
         this.addMouseListener(mH);
@@ -37,7 +45,9 @@ public class GamePanel extends JPanel implements Runnable {
             lastTime = currentTime;
 
             if(mH.mouseClicked) {
+//                grid[mH.mousePos.y][mH.mousePos.x] = new Sand(mH.mousePos.y, mH.mousePos.x);
                 mH.mouseClicked = false;
+
             }
 
             if(delta >= 1) {
@@ -49,6 +59,12 @@ public class GamePanel extends JPanel implements Runnable {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-
+        for (int r = 0; r < gridSize; r++) {
+            for (int c = 0; c < gridSize; c++) {
+                if(grid[r][c] != null) {
+                    grid[r][c].getGraphics().drawRect(r * 2, c * 2, gridPxSize, gridPxSize);
+                }
+            }
+        }
     }
 }
