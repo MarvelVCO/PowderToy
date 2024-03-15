@@ -20,31 +20,54 @@ public class Solid extends Material {
     }
 
     public void move(Material[][] grid) {
-        boolean isBottomLeftSolid = grid[getY() + 1][getX() - 1] instanceof Solid;
-        boolean isBottomSolid = grid[getY() + 1][getX()] instanceof Solid;
-        boolean isBottomRightSolid = grid[getY() + 1][getX() + 1] instanceof Solid;
 
-        int random = (int) (Math.random() * 3);
+        double random = Math.random() * 3;
 
-        if (!isBottomLeftSolid && !isBottomSolid && !isBottomRightSolid) {
-            setX(random < 0.75 ? getX() - 1 : random > 2.25 ? getX() + 1 : getX());
-        }
-
-        if (isBottomSolid) {
-            if (!isBottomLeftSolid && !isBottomRightSolid) {
-                setX((int) (Math.random() * 2) < 1 ? getX() - 1 : getX() + 1);
-            }
-            if (!isBottomLeftSolid && isBottomRightSolid) {
-                setX(getX() - 1);
-            }
-            if (isBottomLeftSolid && !isBottomRightSolid) {
-                setX(getX() + 1);
-            }
-        }
-
-        if (!isBottomLeftSolid || !isBottomSolid || !isBottomRightSolid &&
-            getY() < 500) {
-            setY(getY() - 1);
-        }
+        boolean leftOpen = true;
+        boolean rightOpen = true;
+        int i = 1;
+//        System.out.println((getX() < getX() + (getX() + slip >= grid.length ? grid.length - getX() - 1 : slip)));
+//        for (int c = getX(); (c < getX() + (getX() + slip >= grid.length ? grid.length - getX() - 1 : slip)) && (rightOpen || leftOpen); c++) {
+//            if ((!(grid[getY()][c] instanceof Solid) && rightOpen) && (!(grid[getY()][c - i] instanceof Solid) && leftOpen)) {
+//                if (random < 1.5) {
+//                    if (grid[getY()][c] == null && rightOpen) {
+//                        setX(c);
+//                        break;
+//                    }
+//                    else {
+//                        rightOpen = false;
+//                    }
+//                }
+//
+//                else {
+//                    if (grid[getY()][c - i] == null && leftOpen) {
+//                        setX(c - i);
+//                        break;
+//                    }
+//                    else {
+//                        leftOpen = false;
+//                    }
+//                }
+//            }
+//
+//            if (grid[getY()][c] == null && rightOpen) {
+//                setX(c);
+//                break;
+//            }
+//            else {
+//                rightOpen = false;
+//            }
+//
+//
+//            if (grid[getY()][c - i] == null && leftOpen) {
+//                setX(c - i);
+//                break;
+//            }
+//            else {
+//                leftOpen = false;
+//            }
+//
+//            i++;
+//        }
     }
 }

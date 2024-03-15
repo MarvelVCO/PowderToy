@@ -19,7 +19,7 @@ public class GamePanel extends JPanel implements Runnable {
         gridPxSize = 2;
         grid = new Material[gridSize][gridSize];
 
-        this.setPreferredSize(new Dimension(gridPxSize * gridSize, gridPxSize * gridSize));
+        this.setPreferredSize(new Dimension(gridPxSize * gridSize - gridPxSize, gridPxSize * gridSize - gridPxSize));
         this.setBackground(Color.black);
         this.setDoubleBuffered(true);
         this.addMouseListener(mH);
@@ -46,7 +46,7 @@ public class GamePanel extends JPanel implements Runnable {
 
             if(mH.mouseClicked) {
                 System.out.println(mH.mousePos.y + " " + mH.mousePos.x);
-                grid[mH.mousePos.x / 2][mH.mousePos.y / 2] = new Sand(mH.mousePos.x, mH.mousePos.y);
+                grid[mH.mousePos.x / 2][mH.mousePos.y / 2] = new Sand(mH.mousePos.x / 2, mH.mousePos.y / 2);
                 mH.mouseClicked = false;
 
             }
@@ -74,7 +74,7 @@ public class GamePanel extends JPanel implements Runnable {
             for (int c = 0; c < gridSize; c++) {
                 if(grid[r][c] != null) {
                     g.setColor(grid[r][c].getColor());
-                    g.drawRect(r * 2, c * 2, gridPxSize, gridPxSize);
+                    g.fillRect(r * gridPxSize, c * gridPxSize, gridPxSize, gridPxSize);
                 }
             }
         }
@@ -89,5 +89,6 @@ public class GamePanel extends JPanel implements Runnable {
                 }
             }
         }
+        grid = tempGrid;
     }
 }
