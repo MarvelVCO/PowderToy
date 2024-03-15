@@ -45,7 +45,8 @@ public class GamePanel extends JPanel implements Runnable {
             lastTime = currentTime;
 
             if(mH.mouseClicked) {
-//                grid[mH.mousePos.y][mH.mousePos.x] = new Sand(mH.mousePos.y, mH.mousePos.x);
+                System.out.println(mH.mousePos.y + " " + mH.mousePos.x);
+                grid[mH.mousePos.x / 2][mH.mousePos.y / 2] = new Sand(mH.mousePos.x, mH.mousePos.y);
                 mH.mouseClicked = false;
 
             }
@@ -53,6 +54,16 @@ public class GamePanel extends JPanel implements Runnable {
             if(delta >= 1) {
                 repaint();
                 delta--;
+
+                for (int r = 0; r < gridSize; r++) {
+                    for (int c = 0; c < gridSize; c++) {
+                        if (grid[r][c] != null) {
+                            ((Solid) grid[r][c]).move(grid);
+                        }
+                    }
+                }
+
+                updateGrid();
             }
         }
     }
@@ -62,7 +73,19 @@ public class GamePanel extends JPanel implements Runnable {
         for (int r = 0; r < gridSize; r++) {
             for (int c = 0; c < gridSize; c++) {
                 if(grid[r][c] != null) {
-                    grid[r][c].getGraphics().drawRect(r * 2, c * 2, gridPxSize, gridPxSize);
+                    g.setColor(grid[r][c].getColor());
+                    g.drawRect(r * 2, c * 2, gridPxSize, gridPxSize);
+                }
+            }
+        }
+    }
+
+    public void updateGrid() {
+        Material[][] tempGrid = new Material[gridSize][gridSize];
+        for (int r = 0; r < gridSize; r++) {
+            for (int c = 0; c < gridSize; c++) {
+                if(grid[r][c] != null) {
+                    tempGrid[grid[r][c].getX()][grid[r][c].getY()] = grid[r][c];
                 }
             }
         }

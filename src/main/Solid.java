@@ -7,8 +7,8 @@ public class Solid extends Material {
     private int slip;
     private int density;
 
-    public Solid(Color color, int x, int y, Graphics g, int weight, Material[][] grid) {
-        super(color, x, y, grid, g);
+    public Solid(Color color, int x, int y, int weight) {
+        super(color, x, y);
         this.weight = weight;
     }
     public int getWeight() {
@@ -19,10 +19,10 @@ public class Solid extends Material {
         return slip;
     }
 
-    public void move() {
-        boolean isBottomLeftSolid = getGrid()[getY() + 1][getX() - 1] instanceof Solid;
-        boolean isBottomSolid = getGrid()[getY() + 1][getX()] instanceof Solid;
-        boolean isBottomRightSolid = getGrid()[getY() + 1][getX() + 1] instanceof Solid;
+    public void move(Material[][] grid) {
+        boolean isBottomLeftSolid = grid[getY() + 1][getX() - 1] instanceof Solid;
+        boolean isBottomSolid = grid[getY() + 1][getX()] instanceof Solid;
+        boolean isBottomRightSolid = grid[getY() + 1][getX() + 1] instanceof Solid;
 
         int random = (int) (Math.random() * 3);
 
@@ -42,7 +42,8 @@ public class Solid extends Material {
             }
         }
 
-        if (!isBottomLeftSolid || !isBottomSolid || !isBottomRightSolid) {
+        if (!isBottomLeftSolid || !isBottomSolid || !isBottomRightSolid &&
+            getY() < 500) {
             setY(getY() - 1);
         }
     }

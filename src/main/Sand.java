@@ -4,7 +4,7 @@ import java.awt.*;
 
 public class Sand extends Solid {
 
-    public Sand(int x, int y, Graphics g, Material[][] grid) {
-        super(Color.orange, x, y, g, 1, grid);
+    public Sand(int x, int y) {
+        super(Color.orange, x, y, 0);
     }
 }

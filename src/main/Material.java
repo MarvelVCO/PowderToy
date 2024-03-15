@@ -5,18 +5,15 @@ import java.awt.*;
 public class Material {
     private int x;
     private int y;
-    private Material[][] grid;
-    private Graphics g;
-    public Material(Color color, int x, int y, Material[][] grid, Graphics g) {
+    private Color color;
+    public Material(Color color, int x, int y) {
         this.x = x;
         this.y = y;
-        this.grid = grid;
-        this.g = g;
-        g.setColor(color);
+        this.color = color;
     }
 
-    public Graphics getGraphics() {
-        return g;
+    public Color getColor() {
+        return color;
     }
 
     public int getX() {
@@ -33,9 +30,5 @@ public class Material {
 
     public void setY(int y) {
         this.y = y;
-    }
-
-    public Material[][] getGrid() {
-        return grid;
     }
 }
