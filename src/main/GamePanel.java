@@ -58,7 +58,7 @@ public class GamePanel extends JPanel implements Runnable {
                 for (int r = 0; r < gridSize; r++) {
                     for (int c = 0; c < gridSize; c++) {
                         if (grid[r][c] != null) {
-                            ((Solid) grid[r][c]).move(grid);
+//                            (Solid) grid[r][c].m
                         }
                     }
                 }

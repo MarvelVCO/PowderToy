@@ -1,6 +1,9 @@
 package main;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
 
 public class Solid extends Material {
     private int weight;
@@ -22,52 +25,53 @@ public class Solid extends Material {
     public void move(Material[][] grid) {
 
         double random = Math.random() * 3;
+        Material[] bottomThree = new Material[]{grid[getY() + 1][getX() - 1], grid[getY() + 1][getX()], grid[getY() + 1][getX() + 1]};
 
-        boolean leftOpen = true;
-        boolean rightOpen = true;
-        int i = 1;
-//        System.out.println((getX() < getX() + (getX() + slip >= grid.length ? grid.length - getX() - 1 : slip)));
-//        for (int c = getX(); (c < getX() + (getX() + slip >= grid.length ? grid.length - getX() - 1 : slip)) && (rightOpen || leftOpen); c++) {
-//            if ((!(grid[getY()][c] instanceof Solid) && rightOpen) && (!(grid[getY()][c - i] instanceof Solid) && leftOpen)) {
-//                if (random < 1.5) {
-//                    if (grid[getY()][c] == null && rightOpen) {
-//                        setX(c);
-//                        break;
-//                    }
-//                    else {
-//                        rightOpen = false;
-//                    }
-//                }
-//
-//                else {
-//                    if (grid[getY()][c - i] == null && leftOpen) {
-//                        setX(c - i);
-//                        break;
-//                    }
-//                    else {
-//                        leftOpen = false;
-//                    }
-//                }
-//            }
-//
-//            if (grid[getY()][c] == null && rightOpen) {
-//                setX(c);
-//                break;
-//            }
-//            else {
-//                rightOpen = false;
-//            }
-//
-//
-//            if (grid[getY()][c - i] == null && leftOpen) {
-//                setX(c - i);
-//                break;
-//            }
-//            else {
-//                leftOpen = false;
-//            }
-//
-//            i++;
-//        }
+        if (Arrays.stream(bottomThree).allMatch(Objects::isNull)) {
+            if (random < 0.5) {
+                setX(getX() - 1);
+            }
+            if (random > 2.5) {
+                setX(getX() + 1);
+            }
+        }
+
+
+        else if (Arrays.stream(bottomThree).anyMatch(Objects::isNull)) {
+            ArrayList<Point> openSpots = new ArrayList<>();
+            for (int i = 0; i < bottomThree.length; i++) {
+                if (bottomThree[i] == null) {
+                    if (i == 0) {
+                        openSpots.add(new Point(getX() - 1, getY() + 1));
+                    }
+                    if (i == 1) {
+                        openSpots.add(new Point(getX(), getY() + 1));
+                    }
+                    if (i == 2) {
+                        openSpots.add(new Point(getX() + 1, getY() + 1));
+                    }
+                }
+            }
+            if(openSpots.size() == 2) {
+                if (random < 1.5) {
+                    setX(openSpots.get(0).x);
+                }
+                if (random > 1.5) {
+                    setX(openSpots.get(1).x);
+                }
+            }
+            else {
+                setX(openSpots.get(0).x);
+            }
+        }
+
+        if (Arrays.stream(bottomThree).allMatch(Objects::nonNull)) {
+            // TODO: allow solid to slide across the floor if it hasn't encountered a wall yet
+        }
+
+        else {
+            setY(getY() + 1);
+        }
+
     }
 }
