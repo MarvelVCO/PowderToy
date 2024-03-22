@@ -9,7 +9,7 @@ public class GamePanel extends JPanel implements Runnable {
     private final MouseHandler mH = new MouseHandler();
     private int mouseX1;
     private int mouseY1;
-    int FPS = 60;
+    int FPS = 5;
 
     private Material[][] grid;
     private int gridSize;
@@ -48,7 +48,6 @@ public class GamePanel extends JPanel implements Runnable {
                 System.out.println(mH.mousePos.y + " " + mH.mousePos.x);
                 grid[mH.mousePos.x / 2][mH.mousePos.y / 2] = new Sand(mH.mousePos.x / 2, mH.mousePos.y / 2);
                 mH.mouseClicked = false;
-
             }
 
             if(delta >= 1) {
@@ -58,12 +57,12 @@ public class GamePanel extends JPanel implements Runnable {
                 for (int r = 0; r < gridSize; r++) {
                     for (int c = 0; c < gridSize; c++) {
                         if (grid[r][c] != null) {
-//                            (Solid) grid[r][c].m
+                            if (grid[r][c] instanceof Solid) {
+                                ((Solid) grid[r][c]).move(grid);
+                            }
                         }
                     }
                 }
-
-                updateGrid();
             }
         }
     }
@@ -78,17 +77,5 @@ public class GamePanel extends JPanel implements Runnable {
                 }
             }
         }
-    }
-
-    public void updateGrid() {
-        Material[][] tempGrid = new Material[gridSize][gridSize];
-        for (int r = 0; r < gridSize; r++) {
-            for (int c = 0; c < gridSize; c++) {
-                if(grid[r][c] != null) {
-                    tempGrid[grid[r][c].getX()][grid[r][c].getY()] = grid[r][c];
-                }
-            }
-        }
-        grid = tempGrid;
     }
 }
