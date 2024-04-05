@@ -7,21 +7,13 @@ import java.util.Arrays;
 import java.util.Objects;
 
 
-public class Solid extends Material {
-    private int slip;
-    public String momentumDirection;
-    public int momentum;
-    public Solid(Color color, int x, int y, int slip) {
-        super(color, x, y);
-        this.slip = slip;
-        this.momentum = slip;
-        this.momentumDirection = "";
+public class Vine extends Solid {
+    public Vine(int x, int y) {
+        super(Color.green, x, y, 1);
     }
 
-    public int getSlip() {
-        return slip;
-    }
 
+    @Override
     public void move(Material[][] grid) {
         double random = Math.random() * 3;
 
@@ -39,23 +31,23 @@ public class Solid extends Material {
 
 
                 momentumDirection = "";
-                momentum += momentum < slip ? 1 : 0;
+                momentum += momentum < super.getSlip() ? 1 : 0;
                 setY(getY() + 1);
             }
             else if (Arrays.stream(bottomThree).anyMatch(Objects::isNull)) {
-                ArrayList<Point> openSpots = new ArrayList<>();
+                ArrayList<Material> openSpots = new ArrayList<>();
 
 
                 for (int i = 0; i < bottomThree.length; i++) {
-                    if (!(bottomThree[i] instanceof Solid)) {
+                    if (!(bottomThree[i] instanceof main.Solid)) {
                         if (i == 0) {
-                            openSpots.add(new Point(getX() - 1, getY() + 1));
+                            openSpots.add(bottomThree[0]);
                         }
                         if (i == 1) {
-                            openSpots.add(new Point(getX(), getY() + 1));
+                            openSpots.add(bottomThree[1]);
                         }
                         if (i == 2) {
-                            openSpots.add(new Point(getX() + 1, getY() + 1));
+                            openSpots.add(bottomThree[2]);
                         }
                     }
                 }
@@ -63,24 +55,31 @@ public class Solid extends Material {
 
                 if (openSpots.size() == 2) {
                     if (random < 1.5) {
-                        setX(openSpots.get(0).x);
-                        setY(openSpots.get(0).y);
+                        if (openSpots.get(0) instanceof Water) {
+                            grid[getY()][getX()] = grid[getY() + 1][getX() + 1];
+                            setX(openSpots.get(0).getX());
+                            setY(openSpots.get(0).getY());
+                        }
                     }
                     if (random > 1.5) {
-                        setX(openSpots.get(1).x);
-                        setY(openSpots.get(1).y);
-
+                        if (openSpots.get(1) instanceof Water) {
+                            grid[getY()][getX()] = grid[getY() + 1][getX() + 1];
+                            setX(openSpots.get(1).getX());
+                            setY(openSpots.get(1).getY());
+                        }
                     }
                 }
                 else {
-                    setX(openSpots.get(0).x);
-                    setY(openSpots.get(0).y);
-
+                    if (openSpots.get(0) instanceof Water) {
+                        grid[getY()][getX()] = grid[getY() + 1][getX() + 1];
+                        setX(openSpots.get(0).getX());
+                        setY(openSpots.get(0).getY());
+                    }
                 }
 
 
                 momentumDirection = "";
-                momentum += momentum < slip ? 1 : 0;
+                momentum += momentum < super.getSlip() ? 1 : 0;
             }
 
 
@@ -105,7 +104,7 @@ public class Solid extends Material {
         else if (Arrays.stream(leftRight).anyMatch(Objects::isNull)) {
             momentumDirection = (momentumDirection.isEmpty()) ? (getX() > 0 && !(grid[getY()][getX() - 1] instanceof main.Solid) ? "left" : "right") : momentumDirection;
         }
-        if (momentumDirection != null && momentum <= slip && momentum > 0 && !(momentumDirection.equals("left") && getX() > 0) && !(momentumDirection.equals("right") && getX() < 500) && !(momentumDirection == null)) {
+        if (momentumDirection != null && momentum <= super.getSlip() && momentum > 0 && !(momentumDirection.equals("left") && getX() > 0) && !(momentumDirection.equals("right") && getX() < 500) && !(momentumDirection == null)) {
             setX(momentumDirection.equals("left") && getX() > 0 && leftRight[0].getX() != getX() - 1 ? getX() - 1 : getX() < grid.length && leftRight[1].getX() != getX() + 1 ? getX() + 1 : getX());
         }
     }
